@@ -71,13 +71,19 @@ namespace UW04Mar
 
             foreach (var entry in roomEntries)
             {
-                for (DateTime currentTime = entry.EntryTime; currentTime < entry.ExitTime; currentTime = currentTime.AddMinutes(1))
-                {
-                    if (roomOccupancy.ContainsKey(entry.RoomNumber))
-                        roomOccupancy[entry.RoomNumber]++;
-                    else
-                        roomOccupancy[entry.RoomNumber] = 1;
-                }
+                var numMinutes = (int)(entry.ExitTime - entry.EntryTime).TotalMinutes;
+                if (roomOccupancy.ContainsKey(entry.RoomNumber))
+                    roomOccupancy[entry.RoomNumber] = +numMinutes;
+                else
+                    roomOccupancy[entry.RoomNumber] = numMinutes;
+
+                //for (DateTime currentTime = entry.EntryTime; currentTime < entry.ExitTime; currentTime = currentTime.AddMinutes(1))
+                //{
+                //    if (roomOccupancy.ContainsKey(entry.RoomNumber))
+                //        roomOccupancy[entry.RoomNumber]++;
+                //    else
+                //        roomOccupancy[entry.RoomNumber] = 1;
+                //}
             }
 
             return roomOccupancy.OrderByDescending(kv => kv.Value).FirstOrDefault().Key;
